@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, FlatList, Modal, TouchableOpacity } from 'react-native';
 
 export default function App() {
   const [task, setTask] = useState('');
   const [tasks, setTasks] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const onHandlerChange = (text) => {
     setTask(text)
@@ -20,10 +22,15 @@ export default function App() {
     setTask('');
   }
 
-  const renderItem = ({ item}) => (
-    <View style={styles.itemContainer}>
+  const onHandlerModal = (item) => {
+    setIsModalVisible(!isModalVisible)
+    setSelectedTask(item);
+  }
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity style={styles.itemContainer} onPress={() => onHandlerModal(item)}>
       <Text style={styles.itemList}>{item.value}</Text>
-    </View>
+    </TouchableOpacity>
   )
 
   const keyExtractor = (item) => item.id;
@@ -48,6 +55,9 @@ export default function App() {
         keyExtractor={keyExtractor}
         style={styles.listContainer}
       />
+      <Modal visible={isModalVisible} animationType='slide'>
+        <Text> alwjdlawdjilajidlwjailjil </Text>
+      </Modal>
     </View>
   );
 }
