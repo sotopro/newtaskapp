@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
 
 export default function App() {
   const [task, setTask] = useState('');
@@ -20,7 +20,13 @@ export default function App() {
     setTask('');
   }
 
-  console.warn('tasks', tasks)
+  const renderItem = ({ item}) => (
+    <View style={styles.itemContainer}>
+      <Text style={styles.itemList}>{item.value}</Text>
+    </View>
+  )
+
+  const keyExtractor = (item) => item.id;
 
   return (
     <View style={styles.container}>
@@ -36,15 +42,12 @@ export default function App() {
         />
         <Button disabled={!task} title='Add' color='#626893' onPress={onHandlerSubmit} />
       </View>
-      <View style={styles.listContainer}>
-          {
-            tasks.map((item) => (
-              <View style={styles.itemContainer}>
-              <Text style={styles.itemList} key={item.id}>{item.value}</Text>
-              </View>
-            ))
-          }
-        </View>
+      <FlatList 
+        data={tasks}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        style={styles.listContainer}
+      />
     </View>
   );
 }
